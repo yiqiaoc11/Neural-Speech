@@ -189,34 +189,3 @@ class SpeechRecognitionModel(nn.Module):
         x = self.birnn_layers(x)
         x = self.classifier(x)
         return x
-
-optimizer = optim.AdamW(model.parameters(), hparams['learning_rate'])
-scheduler = optim.lr_scheduler.OneCycleLR(optimizer,
-	max_lr=hparams['learning_rate'],
-	steps_per_epoch=int(len(train_loader)),
-	epochs=hparams['epochs'],
-	anneal_strategy='linear')
-
-criterion = nn.CTCLoss(blank=28).to(device)
-
-def GreedyDecoder(output, labels, label_lengths, blank_label=28, collapse_repeated=True):
-    arg_maxes = torch.argmax(output, dim=2)
-    decodes = []
-    targets = []
-    for i, args in enumerate(arg_maxes):
-        decode = []
-        targets.append(text_transform.int_to_text(labels[i][:label_lengths[i]].tolist()))
-        for j, index in enumerate(args):
-            if index != blank_label:
-                if collapse_repeated and j != 0 and index == args[j -1]:
-                    continue
-                decode.append(index.item())
-        decodes.append(text_transform.int_to_text(decode))
-    return decodes, targets
-
-# initialize experiment object
-experiment = Experiment(api_key=comet_api_key, project_name=project_name)
-experiment.set_name(exp_name)
-
-# track metrics
-experiment.log_metric('loss', loss.item())
