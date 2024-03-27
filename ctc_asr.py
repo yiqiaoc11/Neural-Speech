@@ -33,7 +33,7 @@ char_map_str = """
  z 27
  """
  
- class TextTransform:
+class TextTransform:
     """Maps characters to integers and vice versa"""
     def __init__(self):
         char_map_str = char_map_str
