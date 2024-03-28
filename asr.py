@@ -1,5 +1,7 @@
 import torchaudio
 import utils
+import model
+
 
 char_map_str = """
  ' 0
