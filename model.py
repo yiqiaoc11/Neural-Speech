@@ -1,3 +1,9 @@
+import torch
+import torch.nn.functional as F
+import os
+from comet_ml import Experiment
+from comet_ml.integration.pytorch import log_model
+
 class CNNLayerNorm(nn.Module):
     """Layer normalization built for cnns input"""
     def __init__(self, n_feats):
