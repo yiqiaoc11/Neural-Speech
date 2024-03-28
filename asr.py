@@ -1,6 +1,6 @@
 import torchaudio
-import utils
-import model
+from utils import *
+from model import *
 
 class TextTransform:
     """Maps characters to integers and vice versa"""
